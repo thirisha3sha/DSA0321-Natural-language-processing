@@ -1,0 +1,24 @@
+#Write program demonstrates how to perform morphological analysis using the NLTK library in Python.
+import nltk
+from nltk.tokenize import word_tokenize
+from nltk.stem import PorterStemmer,WordNetLemmatizer
+nltk.download('punkt')
+nltk.download('wordnet')
+nltk.download('omw-1.4')
+text = "The leaves on the trees were falling rapidly as the wind blew harder."
+tokens = word_tokenize(text)
+print("Tokens:", tokens)
+stemmer = PorterStemmer()
+lemmatizer = WordNetLemmatizer()
+stemmed_words = [stemmer.stem(token) for token in tokens]
+print("Stemmed Words:", stemmed_words)
+lemmatized_words = [lemmatizer.lemmatize(token) for token in tokens]
+print("Lemmatized Words:", lemmatized_words)
+#output:
+[nltk_data] Downloading package punkt to /root/nltk_data...
+[nltk_data]   Unzipping tokenizers/punkt.zip.
+[nltk_data] Downloading package wordnet to /root/nltk_data...
+[nltk_data] Downloading package omw-1.4 to /root/nltk_data...
+Tokens: ['The', 'leaves', 'on', 'the', 'trees', 'were', 'falling', 'rapidly', 'as', 'the', 'wind', 'blew', 'harder', '.']
+Stemmed Words: ['the', 'leav', 'on', 'the', 'tree', 'were', 'fall', 'rapidli', 'as', 'the', 'wind', 'blew', 'harder', '.']
+Lemmatized Words: ['The', 'leaf', 'on', 'the', 'tree', 'were', 'falling', 'rapidly', 'a', 'the', 'wind', 'blew', 'harder', '.']

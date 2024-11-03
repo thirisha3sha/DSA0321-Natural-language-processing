@@ -1,0 +1,15 @@
+#Implement a finite-state machine for morphological parsing. In this example, we'll create a simple machine to generate plural forms of English nouns using python.
+import nltk
+def pluralize(word):
+    if word.endswith(('s', 'x', 'z', 'sh', 'ch')):
+        return word + 'es'
+    elif word.endswith('y'):
+        return word[:-1] + 'ies'
+    else:
+        return word + 's'
+
+words = ["cat", "city", "baby", "potato", "box"]
+pluralized_words = [pluralize(word) for word in words]
+print(pluralized_words)
+#output:
+['cats', 'cities', 'babies', 'potatos', 'boxes']

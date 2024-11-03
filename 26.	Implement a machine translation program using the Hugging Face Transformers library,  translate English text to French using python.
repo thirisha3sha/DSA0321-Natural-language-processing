@@ -1,0 +1,24 @@
+#26.	Implement a machine translation program using the Hugging Face Transformers library,  translate English text to French using python.
+from transformers import pipeline
+translator = pipeline("translation_en_to_de")
+while True:
+    english_text = input("Enter English text to translate to French (or type 'exit' to quit): ")
+    if english_text.lower() == 'exit':
+        break
+    translation = translator(english_text, max_length=40)
+    french_text = translation[0]['translation_text']
+    print('French:',french_text)
+#output:
+Enter English text to translate to French (or type 'exit' to quit): good evening
+French: guten Abend
+Enter English text to translate to French (or type 'exit' to quit): good afternoon
+French: guten Nachmittag
+Enter English text to translate to French (or type 'exit' to quit): i
+French: i
+Enter English text to translate to French (or type 'exit' to quit): my
+French: my
+Enter English text to translate to French (or type 'exit' to quit): my name is 
+French: mein Name ist
+Enter English text to translate to French (or type 'exit' to quit): you
+French: Sie
+--------------------

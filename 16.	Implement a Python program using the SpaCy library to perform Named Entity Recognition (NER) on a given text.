@@ -1,0 +1,12 @@
+#16.	Implement a Python program using the SpaCy library to perform Named Entity Recognition (NER) on a given text.
+import spacy
+nlp = spacy.load('en_core_web_sm')
+text = "Apple is looking at buying U.K. startup for $1 billion."
+doc = nlp(text)
+for i in doc.ents:
+    print(i.text, i.label_)
+#output:
+
+Apple ORG
+U.K. GPE
+$1 billion MONEY

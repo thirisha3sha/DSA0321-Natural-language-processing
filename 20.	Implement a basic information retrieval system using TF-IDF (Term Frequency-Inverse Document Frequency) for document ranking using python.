@@ -1,0 +1,27 @@
+#20.	Implement a basic information retrieval system using TF-IDF (Term Frequency-Inverse Document Frequency) for document ranking using python.
+import numpy as np
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+documents = [
+    "Cat and dog.",
+    "Cat runs fast.",
+    "Dog barks loud.",
+    "Fast dog chases cat."
+]
+query = "Cat runs."
+vectorizer = TfidfVectorizer()
+tfidf_matrix = vectorizer.fit_transform(documents)
+query_vector = vectorizer.transform([query])
+cosine_similarities = cosine_similarity(query_vector, tfidf_matrix).flatten()
+ranked_indices = cosine_similarities.argsort()[::-1]
+ranked_scores = cosine_similarities[ranked_indices]
+print("Ranked Documents based on Query:")
+for i, score in zip(ranked_indices, ranked_scores):
+    print(f"Document {i + 1}: \"{documents[i]}\" (Score: {score:.4f})")
+
+#output:
+Ranked Documents based on Query:
+Document 2: "Cat runs fast." (Score: 0.8329)
+Document 1: "Cat and dog." (Score: 0.2549)
+Document 4: "Fast dog chases cat." (Score: 0.2200)
+Document 3: "Dog barks loud." (Score: 0.0000)

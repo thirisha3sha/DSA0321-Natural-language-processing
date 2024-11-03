@@ -1,0 +1,14 @@
+#Use the Porter Stemmer algorithm to perform word stemming on a list of words using python libraries.
+import nltk
+from nltk.tokenize import word_tokenize
+from nltk.stem import PorterStemmer
+text = "The leaves on the trees were falling rapidly as the wind blew harder."
+tokens = word_tokenize(text)
+print("Tokens:", tokens)
+stemmer = PorterStemmer()
+stemmed_words = [stemmer.stem(token) for token in tokens]
+print("Stemmed Words:", stemmed_words)
+
+#output:
+Tokens: ['The', 'leaves', 'on', 'the', 'trees', 'were', 'falling', 'rapidly', 'as', 'the', 'wind', 'blew', 'harder', '.']
+Stemmed Words: ['the', 'leav', 'on', 'the', 'tree', 'were', 'fall', 'rapidli', 'as', 'the', 'wind', 'blew', 'harder', '.']

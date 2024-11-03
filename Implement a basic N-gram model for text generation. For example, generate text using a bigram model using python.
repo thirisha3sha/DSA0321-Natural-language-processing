@@ -1,0 +1,23 @@
+#Implement a basic N-gram model for text generation. For example, generate text using a bigram model using python.
+import random
+import nltk
+from collections import defaultdict
+nltk.download('punkt')
+text = "I love programming. Programming is fun and rewarding."
+words = nltk.word_tokenize(text)
+bigrams = list(nltk.bigrams(words))
+model = defaultdict(list)
+for w1, w2 in bigrams:
+    model[w1].append(w2)
+def generate(start_word, length):
+    result = [start_word]
+    for _ in range(length - 1):
+        next_word = random.choice(model.get(start_word, [""]))
+        result.append(next_word)
+        start_word = next_word
+    return ' '.join(result)
+print(generate("Programming",6))
+#output:
+Programming is fun and rewarding .
+[nltk_data] Downloading package punkt to /root/nltk_data...
+[nltk_data]   Package punkt is already up-to-date!

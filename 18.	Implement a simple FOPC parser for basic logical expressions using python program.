@@ -1,0 +1,18 @@
+#18.	Implement a simple FOPC parser for basic logical expressions using python program.
+import re
+
+class FOPCParser:
+    def __init__(self, expression):
+        self.expression = expression
+
+    def parse(self):
+        tokens = re.findall(r'[A-Za-z]+|\(|\)|,|~|->|&|\|', self.expression)
+        return tokens
+
+# Test the parser with a simple logical expression
+expression = "(forall x) (Dog(x) -> Animal(x))"
+parser = FOPCParser(expression)
+parsed_tokens = parser.parse()
+print("Parsed Tokens:", parsed_tokens)
+#output:
+Parsed Tokens: ['(', 'forall', 'x', ')', '(', 'Dog', '(', 'x', ')', '->', 'Animal', '(', 'x', ')', ')']

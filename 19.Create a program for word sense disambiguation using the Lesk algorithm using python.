@@ -1,0 +1,40 @@
+#19.Create a program for word sense disambiguation using the Lesk algorithm using python.
+import nltk
+from nltk.corpus import wordnet as wn
+from nltk.tokenize import word_tokenize
+nltk.download('punkt')
+nltk.download('wordnet')
+def lesk(text, ambiguous_word):
+    context = set(word_tokenize(text))
+    synsets = wn.synsets(ambiguous_word)
+    if not synsets:
+        return None
+    best_sense = None
+    max_overlap = 0
+    for sense in synsets:
+        meanings= set(word_tokenize(sense.definition()))
+        for example in sense.examples():
+            meanings.update(word_tokenize(example))
+        overlap = len(context.intersection(meanings))
+        if overlap > max_overlap:
+            max_overlap = overlap
+            best_sense = sense
+    return best_sense
+text1 = "The bank was flooded after the storm."
+best_sense_bank = lesk(text1, 'bank')
+print(f"Best sense for 'bank': {best_sense_bank} =>{best_sense_bank.definition()}")
+
+
+import nltk
+from nltk.wsd import lesk; from nltk.corpus import wordnet as wn
+nltk.download('wordnet')
+context = "I went to the bank to deposit money"
+sense = lesk(context.split(), 'bank'); print(sense.name(), sense.definition()) if sense else print("No sense found.")
+
+
+#output:
+[nltk_data] Downloading package punkt to /root/nltk_data...
+[nltk_data]   Package punkt is already up-to-date!
+[nltk_data] Downloading package wordnet to /root/nltk_data...
+Best sense for 'bank': Synset('savings_bank.n.02') =>a container (usually with a slot in the top) for keeping money at home
+Best sense for 'bass': Synset('bass.n.01') => the lowest part of the musical range

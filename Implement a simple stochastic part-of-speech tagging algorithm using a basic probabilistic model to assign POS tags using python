@@ -1,0 +1,30 @@
+#Implement a simple stochastic part-of-speech tagging algorithm using a basic probabilistic model to assign POS tags using python
+import random
+corpus = {
+    'the': ['DT'],
+    'cat': ['NN'],
+    'sat': ['VBD'],
+    'on': ['IN'],
+    'mat': ['NN'],
+    'a': ['DT'],
+    'dog': ['NN'],
+    'is': ['VBZ'],
+    'sitting': ['VBG']
+}
+def pos_tag(sentence):
+    words = sentence.split()
+    tagged_sentence = []
+    for word in words:
+        if word in corpus:
+            pos_tags = corpus[word]
+            pos_tag = random.choice(pos_tags)
+        else:
+            pos_tag = 'NN'
+        tagged_sentence.append((word, pos_tag))
+    return tagged_sentence
+sentence = "the cat is sitting on the mat"
+tagged_sentence = pos_tag(sentence)
+print(tagged_sentence)
+#ouptput:
+[('the', 'DT'), ('cat', 'NN'), ('is', 'VBZ'), ('sitting', 'VBG'), ('on', 'IN'), ('the', 'DT'), ('mat', 'NN')]
+

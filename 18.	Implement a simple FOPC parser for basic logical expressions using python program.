@@ -1,18 +1,101 @@
 #18.	Implement a simple FOPC parser for basic logical expressions using python program.
-import re
+import nltk
+from nltk import CFG
+grammar = CFG.fromstring("""
+    S -> EXPR
+    EXPR -> PRED | EXPR 'AND' EXPR | EXPR 'OR' EXPR
+    PRED -> NAME '(' VARS ')'
+    VARS -> VAR | VAR ',' VARS
+    NAME -> 'P' | 'Q' | 'R'
+    VAR -> 'x' | 'y' | 'z'
+    AND -> 'AND'
+    OR -> 'OR'
+""")
+parser = nltk.ChartParser(grammar)
+def parse_expression(expression):
+    try:
+        tokens = expression.replace('(', ' ( ').replace(')', ' ) ').replace(',', ' , ').split()
+        trees = list(parser.parse(tokens))
+        if trees:
+            for tree in trees:
+                tree.pretty_print()
+        else:
+            print("No valid parse found.")
+    except ValueError as e:
+        print(f"Error: {e}")
+expressions = [
+    "P(x,y)",
+    "Q(x) AND R(y,z)",
+    "P(x) OR Q(y) AND R(z)"
+]
+for i in expressions:
+    print(f"Parsing expression: {i}")
+    parse_expression(i)
+    print()
 
-class FOPCParser:
-    def __init__(self, expression):
-        self.expression = expression
-
-    def parse(self):
-        tokens = re.findall(r'[A-Za-z]+|\(|\)|,|~|->|&|\|', self.expression)
-        return tokens
-
-# Test the parser with a simple logical expression
-expression = "(forall x) (Dog(x) -> Animal(x))"
-parser = FOPCParser(expression)
-parsed_tokens = parser.parse()
-print("Parsed Tokens:", parsed_tokens)
 #output:
-Parsed Tokens: ['(', 'forall', 'x', ')', '(', 'Dog', '(', 'x', ')', '->', 'Animal', '(', 'x', ')', ')']
+Parsing expression: P(x,y)
+         S                
+         |                 
+        EXPR              
+         |                 
+        PRED              
+  _______|________         
+ |   |   |       VARS     
+ |   |   |     ___|____    
+ |   |   |    |   |   VARS
+ |   |   |    |   |    |   
+ |   |  NAME  |  VAR  VAR 
+ |   |   |    |   |    |   
+ (   )   P    ,   x    y  
+
+Parsing expression: Q(x) AND R(y,z)
+                        S                         
+                        |                          
+                       EXPR                       
+  ______________________|________                  
+ |       |                      EXPR              
+ |       |                       |                 
+ |      EXPR                    PRED              
+ |       |               ________|________         
+ |      PRED            |    |   |       VARS     
+ |    ___|_________     |    |   |     ___|____    
+ |   |   |    |   VARS  |    |   |    |   |   VARS
+ |   |   |    |    |    |    |   |    |   |    |   
+ |   |   |   NAME VAR   |    |  NAME  |  VAR  VAR 
+ |   |   |    |    |    |    |   |    |   |    |   
+AND  (   )    Q    x    (    )   R    ,   y    z  
+
+Parsing expression: P(x) OR Q(y) AND R(z)
+                            S                                    
+                            |                                     
+                           EXPR                                  
+  __________________________|______________                       
+ |       |                                EXPR                   
+ |       |               __________________|________              
+ |      EXPR            |       EXPR               EXPR          
+ |       |              |        |                  |             
+ |      PRED            |       PRED               PRED          
+ |    ___|_________     |    ____|_________      ___|_________    
+ |   |   |    |   VARS  |   |    |    |   VARS  |   |    |   VARS
+ |   |   |    |    |    |   |    |    |    |    |   |    |    |   
+ |   |   |   NAME VAR   |   |    |   NAME VAR   |   |   NAME VAR 
+ |   |   |    |    |    |   |    |    |    |    |   |    |    |   
+ OR  (   )    P    x   AND  (    )    Q    y    (   )    R    z  
+
+                            S                                    
+                            |                                     
+                           EXPR                                  
+  __________________________|_______________________              
+ |                    EXPR                          |            
+ |    _________________|_________                   |             
+ |   |      EXPR                EXPR               EXPR          
+ |   |       |                   |                  |             
+ |   |      PRED                PRED               PRED          
+ |   |    ___|_________      ____|_________      ___|_________    
+ |   |   |   |    |   VARS  |    |    |   VARS  |   |    |   VARS
+ |   |   |   |    |    |    |    |    |    |    |   |    |    |   
+ |   |   |   |   NAME VAR   |    |   NAME VAR   |   |   NAME VAR 
+ |   |   |   |    |    |    |    |    |    |    |   |    |    |   
+AND  OR  (   )    P    x    (    )    Q    y    (   )    R    z  
+

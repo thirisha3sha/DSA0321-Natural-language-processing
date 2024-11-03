@@ -1,0 +1,17 @@
+#17.	Write program demonstrates how to access WordNet, a lexical database, to retrieve synsets and explore word meanings in python.
+import nltk
+from nltk.corpus import wordnet as wn
+nltk.download('wordnet')
+word = input("Enter a word: ")
+synset = wn.synsets(word)
+if synset:
+  print(f"Synset: {synset[0].name()}")
+  print(f"Definition: {synset[0].definition()}")
+else:
+  print("No Synset is found")
+#output:
+[nltk_data] Downloading package wordnet to /root/nltk_data...
+[nltk_data]   Package wordnet is already up-to-date!
+Enter a word: bank
+Synset: bank.n.01
+Definition: sloping land (especially the slope beside a body of water)

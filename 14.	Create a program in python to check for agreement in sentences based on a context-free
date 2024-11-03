@@ -1,0 +1,25 @@
+#14.	Create a program in python to check for agreement in sentences based on a context-free
+import nltk
+from nltk import CFG
+grammar = CFG.fromstring("""
+    S -> NP VP
+    NP -> Det N
+    VP -> V
+    Det -> 'the' | 'a'
+    N -> 'dog' | 'dogs' | 'cat' | 'cats'
+    V -> 'chases' | 'chase'
+""")
+def check_agreement(sentence):
+    parser = nltk.ChartParser(grammar)
+    try:
+        trees = list(parser.parse(sentence))
+        if trees:
+            print("The sentence follows subject-verb agreement.")
+        else:
+            print("The sentence does not follow subject-verb agreement.")
+    except:
+        print("Invalid sentence structure.")
+sentence = ['the', 'dog', 'chases']
+check_agreement(sentence)
+#output:
+The sentence follows subject-verb agreement.

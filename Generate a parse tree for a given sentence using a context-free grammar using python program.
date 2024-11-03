@@ -1,0 +1,28 @@
+#Generate a parse tree for a given sentence using a context-free grammar using python program.
+import nltk
+from nltk.parse import RecursiveDescentParser
+from nltk.grammar import CFG
+grammar = CFG.fromstring("""
+    S  -> NP VP
+    NP -> Det N
+    VP -> V NP
+    Det -> 'the'
+    N  -> 'cat' | 'dog'
+    V  -> 'chased' | 'saw'
+""")
+parser = RecursiveDescentParser(grammar)
+sentence = "the cat chased the dog".split()
+for tree in parser.parse(sentence):
+    print(tree)
+    tree.pretty_print()
+#output:
+(S (NP (Det the) (N cat)) (VP (V chased) (NP (Det the) (N dog))))
+              S               
+      ________|_____           
+     |              VP        
+     |         _____|___       
+     NP       |         NP    
+  ___|___     |      ___|___   
+Det      N    V    Det      N 
+ |       |    |     |       |  
+the     cat chased the     dog

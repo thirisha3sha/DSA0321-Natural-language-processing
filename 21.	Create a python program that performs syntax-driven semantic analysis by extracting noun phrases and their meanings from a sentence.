@@ -1,0 +1,32 @@
+#21.	Create a python program that performs syntax-driven semantic analysis by extracting noun phrases and their meanings from a sentence.
+import nltk
+from nltk import pos_tag, word_tokenize
+from nltk.corpus import wordnet as wn
+nltk.download('averaged_perceptron_tagger')
+nltk.download('punkt')
+nltk.download('wordnet')
+def get_meaning(word):
+    synsets = wn.synsets(word, pos=wn.NOUN)
+    if synsets:
+        return synsets[0].definition()
+    return "No meaning available."
+def extract_nouns_with_meanings(sentence):
+    words = word_tokenize(sentence)
+    pos_tags = pos_tag(words)
+    for word, tag in pos_tags:
+        if tag in ['NN', 'NNS']:
+            meaning = get_meaning(word)
+            print(f"Noun: '{word}' => Meaning: {meaning}")
+sentence = "The cat chased a mouse near the riverbank."
+extract_nouns_with_meanings(sentence)
+#output:
+[nltk_data] Downloading package averaged_perceptron_tagger to
+[nltk_data]     /root/nltk_data...
+[nltk_data]   Unzipping taggers/averaged_perceptron_tagger.zip.
+[nltk_data] Downloading package punkt to /root/nltk_data...
+[nltk_data]   Package punkt is already up-to-date!
+[nltk_data] Downloading package wordnet to /root/nltk_data...
+[nltk_data]   Package wordnet is already up-to-date!
+Noun: 'cat' => Meaning: feline mammal usually having thick soft fur and no ability to roar: domestic cats; wildcats
+Noun: 'mouse' => Meaning: any of numerous small rodents typically resembling diminutive rats having pointed snouts and small ears on elongated bodies with slender usually hairless tails
+Noun: 'riverbank' => Meaning: the bank of a river
